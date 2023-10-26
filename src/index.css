@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .box-shadow {
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+  }
+}
+
+input[type='text'].primary,
+input[type='password'].primary {
+  @apply outline-0 border border-black;
+}
+textarea {
+  height: 140px;
+}
+button {
+  @apply bg-white border border-black;
+}
+
+button.primary {
+  @apply font-semibold border rounded-md;
+}
+button.secondary {
+  @apply box-shadow p-3 font-semibold border-2 rounded-md;
+}
