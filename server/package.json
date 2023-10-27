@@ -1,19 +1,18 @@
 {
+  "type": "module",
   "dependencies": {
-    "express": "^4.18.2",
-    "mongodb": "^6.2.0",
-    "mongoose": "^7.6.3"
+    "express": "^4.18.2"
   },
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
+    "mongodb": "^6.2.0",
+    "mongoose": "^7.6.3",
     "nodemon": "^3.0.1"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
