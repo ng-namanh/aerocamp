@@ -19,8 +19,8 @@ function LandingPage() {
               camps on Earth.
             </h1>
             <p className='my-6 text-[#544848] text-xl'>
-              Yelp camp is a curated list of the best camping spots on Earth.
-              Unfiltered and unbiased reviews
+              Yelp camp is a curated list of the best camping spots on <br />
+              Earth. Unfiltered and unbiased reviews
             </p>
             <div>
               <div className='flex gap-3 my-1 items-center justify-start'>
