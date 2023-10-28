@@ -2,7 +2,26 @@ import logo from '../assets/logo.svg'
 import backArrow from '../assets/backArrow.svg'
 import { Link } from 'react-router-dom'
 import testimonialAvatar from '../assets/testiAvatar.svg'
+import { useState } from 'react'
+import axios from 'axios'
 function LoginPage() {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  function registerUser(e) {
+    e.preventDefault()
+    try {
+      axios.post('/register', {
+        username,
+        password
+      })
+    } catch (error) {
+      console.error(error)
+      alert('registeration failed. Please try again later!')
+    }
+    console.log(username, password)
+    setUsername('')
+    setPassword('')
+  }
   return (
     <div className='max-w-7xl my-12 mx-auto'>
       <div className='flex justify-between'>
@@ -21,7 +40,7 @@ function LoginPage() {
           <h1 className='font-bold text-3xl'>
             Start exploring camp from all <br /> over the world.
           </h1>
-          <form className='mt-8' action=''>
+          <form className='mt-8' onSubmit={registerUser}>
             <div className='flex flex-col gap-2'>
               <label
                 id='username'
@@ -33,8 +52,12 @@ function LoginPage() {
               <input
                 className='primary w-3/4 p-3 rounded-sm'
                 type='text'
-                name=''
+                value={username}
+                name='username'
                 id='username'
+                onChange={(e) => {
+                  setUsername(e.target.value)
+                }}
               />
             </div>
             <div className='flex flex-col gap-2 mt-4'>
@@ -48,8 +71,12 @@ function LoginPage() {
               <input
                 className='primary w-3/4 p-3 rounded-sm'
                 type='password'
-                name=''
+                value={password}
+                name='password'
                 id='password'
+                onChange={(e) => {
+                  setPassword(e.target.value)
+                }}
               />
             </div>
             <div>

@@ -1,12 +1,19 @@
-import UserModal from '../server/src/modal/User.js'
+import UserModel from './src/model/User.js'
 import express from 'express'
 import mongoose from 'mongoose'
 import passport from 'passport'
 import passortLocal from 'passport-local'
 import session from 'express-session'
 import dotenv from 'dotenv'
+import cors from 'cors'
 dotenv.config()
 const app = express()
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+  })
+)
 const { PORT, KEY_SESSION, MONGO_URI } = process.env
 const LocalStrategy = passortLocal.Strategy
 
@@ -25,46 +32,26 @@ app.use(
   })
 )
 
-app.use(passport.initialize())
+app.use(passport.initialize()) // initialize passport
 app.use(passport.session())
 
-app.post(
-  '/login',
-  passport.authenticate('local', {
-    successRedirect: '/home',
-    failureRedirect: '/login'
-  }),
-  (req, res) => {
-    try {
-      res.json()
-    } catch (error) {}
-  }
-)
-const User = new UserModal({
-  username: 'Nam Anh',
-  password: '1234'
-})
-passport.use(
-  new LocalStrategy((username, password, done) => {
-    console.log(`username:${username}, password:${password}`)
-    if (username === User.username && password === User.password) {
-      return done(null, {
-        username,
-        password,
-        active: true
-      })
-    }
-  })
-)
+passport.use(new LocalStrategy(UserModel.authenticate())) // authenticate user
 
-passport.serializeUser((User, done) => done(null, User.username))
-passport.deserializeUser((username, done) => {
-  // check username
-  if (username === User.username) {
-    return done(null, {
-      username,
-      active: true
-    })
+passport.serializeUser(UserModel.serializeUser()) // how to store a user in session
+passport.deserializeUser(UserModel.deserializeUser()) // get user out of that session
+
+/* app.post('/login', passport.authenticate('local'), async (req, res) => {
+  res.json('ok')
+  console.log('Login OK')
+}) */
+app.post('/login', passport.authenticate('local'), async (req, res) => {
+  const { username } = req.body
+  const userDoc = await UserModel.findOne({ username })
+  if (userDoc) {
+    res.json(userDoc)
+    console.log(userDoc)
+  } else {
+    res.status(404).json('not found')
   }
 })
 
@@ -73,8 +60,18 @@ app.get('/', (req, res) => {
 })
 
 app.post('/register', async (req, res) => {
-  const createUser = await User.save()
-  res.json(createUser)
+  const { username, password } = req.body // get the request data from client
+  try {
+    // create new model
+    const userDoc = new UserModel({
+      username,
+      password
+    })
+    const registeredUser = await UserModel.register(userDoc, password) // register user through passport-local-moongoose plugin
+    res.json(registeredUser) // send back json response to client
+  } catch (error) {
+    res.status(422).json({ error: error.message }) // catch error
+  }
 })
 
 mongoose.connect(MONGO_URI).then(() => {

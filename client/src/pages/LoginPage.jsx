@@ -1,8 +1,38 @@
+import { useState } from 'react'
+import axios from 'axios'
 import logo from '../assets/logo.svg'
 import backArrow from '../assets/backArrow.svg'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import testimonialAvatar from '../assets/testiAvatar.svg'
 function LoginPage() {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [redirect, setRedirect] = useState(false)
+  function Login(e) {
+    e.preventDefault()
+    try {
+      axios
+        .post('/login', {
+          username,
+          password
+        })
+        .then((response) => {
+          if (response.data) {
+            console.log(response.data)
+            setRedirect(true)
+          }
+        })
+    } catch (error) {
+      console.error(error)
+      alert('login fail, please check your username or password')
+    }
+    console.log(username, password)
+    setUsername('')
+    setPassword('')
+  }
+  if (redirect) {
+    return <Navigate to={'/home'} />
+  }
   return (
     <div className='max-w-7xl my-12 mx-auto'>
       <div className='flex justify-between'>
@@ -21,7 +51,7 @@ function LoginPage() {
           <h1 className='font-bold text-3xl'>
             Start exploring camp from all <br /> over the world.
           </h1>
-          <form className='mt-8' action=''>
+          <form className='mt-8' onSubmit={Login}>
             <div className='flex flex-col gap-2'>
               <label
                 id='username'
@@ -33,8 +63,10 @@ function LoginPage() {
               <input
                 className='primary w-3/4 p-3 rounded-sm'
                 type='text'
-                name=''
+                name='username'
                 id='username'
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
               />
             </div>
             <div className='flex flex-col gap-2 mt-4'>
@@ -50,6 +82,8 @@ function LoginPage() {
                 type='password'
                 name=''
                 id='password'
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
             </div>
             <div>
