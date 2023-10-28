@@ -1,13 +1,17 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import axios from 'axios'
 import logo from '../assets/logo.svg'
 import backArrow from '../assets/backArrow.svg'
 import { Link, Navigate } from 'react-router-dom'
 import testimonialAvatar from '../assets/testiAvatar.svg'
+import { UserContext } from '../context/UserContext'
 function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [redirect, setRedirect] = useState(false)
+
+  const { setUser } = useContext(UserContext)
+
   function Login(e) {
     e.preventDefault()
     try {
@@ -19,6 +23,7 @@ function LoginPage() {
         .then((response) => {
           if (response.data) {
             console.log(response.data)
+            setUser(response.data)
             setRedirect(true)
           }
         })

@@ -6,17 +6,18 @@ import passortLocal from 'passport-local'
 import session from 'express-session'
 import dotenv from 'dotenv'
 import cors from 'cors'
+
 dotenv.config()
 const app = express()
+const { PORT, KEY_SESSION, MONGO_URI } = process.env
+const LocalStrategy = passortLocal.Strategy
+
 app.use(
   cors({
     origin: 'http://localhost:5173',
     credentials: true
   })
 )
-const { PORT, KEY_SESSION, MONGO_URI } = process.env
-const LocalStrategy = passortLocal.Strategy
-
 app.use(express.json())
 
 const store = session.MemoryStore()
@@ -55,10 +56,6 @@ app.post('/login', passport.authenticate('local'), async (req, res) => {
   }
 })
 
-app.get('/', (req, res) => {
-  res.json('<h1>Hello World!</h1>')
-})
-
 app.post('/register', async (req, res) => {
   const { username, password } = req.body // get the request data from client
   try {
@@ -71,6 +68,15 @@ app.post('/register', async (req, res) => {
     res.json(registeredUser) // send back json response to client
   } catch (error) {
     res.status(422).json({ error: error.message }) // catch error
+  }
+})
+
+app.get('/profile', (req, res) => {
+  if (req.isAuthenticated()) {
+    const user = req.user
+    res.json(user)
+  } else {
+    res.status(401).json('Unauthorized')
   }
 })
 
