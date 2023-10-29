@@ -1,24 +1,34 @@
-import UserModel from './src/model/User.js'
-import express from 'express'
-import mongoose from 'mongoose'
+const UserModel = require('./model/User.js')
+/* import mongoose from 'mongoose'
 import passport from 'passport'
 import passortLocal from 'passport-local'
-import session from 'express-session'
-import dotenv from 'dotenv'
-import cors from 'cors'
+import session from 'express-session' */
+const express = require('express')
+const cors = require('cors')
+const dbSetup = require('./config/db.js')
+const initAuthRoute = require('./route')
+require('dotenv').config()
 
-dotenv.config()
 const app = express()
-const { PORT, KEY_SESSION, MONGO_URI } = process.env
-const LocalStrategy = passortLocal.Strategy
-
+const port = process.env.PORT || 5000
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(
   cors({
     origin: 'http://localhost:5173',
     credentials: true
   })
 )
-app.use(express.json())
+dbSetup()
+
+initAuthRoute(app)
+
+app.listen(port, () => {
+  console.log('Server running on port:' + port)
+})
+
+/* const LocalStrategy = passortLocal.Strategy */
+/* app.use(express.json())
 
 const store = session.MemoryStore()
 
@@ -33,18 +43,15 @@ app.use(
   })
 )
 
-app.use(passport.initialize()) // initialize passport
+app.use(passport.initialize()) 
 app.use(passport.session())
 
-passport.use(new LocalStrategy(UserModel.authenticate())) // authenticate user
+passport.use(new LocalStrategy(UserModel.authenticate())) 
 
-passport.serializeUser(UserModel.serializeUser()) // how to store a user in session
-passport.deserializeUser(UserModel.deserializeUser()) // get user out of that session
+passport.serializeUser(UserModel.serializeUser()) 
+passport.deserializeUser(UserModel.deserializeUser())
 
-/* app.post('/login', passport.authenticate('local'), async (req, res) => {
-  res.json('ok')
-  console.log('Login OK')
-}) */
+
 app.post('/login', passport.authenticate('local'), async (req, res) => {
   const { username } = req.body
   const userDoc = await UserModel.findOne({ username })
@@ -85,3 +92,4 @@ mongoose.connect(MONGO_URI).then(() => {
     console.log(`Listening on port ${PORT}`)
   })
 })
+ */
