@@ -1,7 +1,10 @@
 const User = require('../model/User.js')
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const {
+  generateAccessToken,
+  generateRefreshToken
+} = require('../middlewares/jwt.js')
 
 const register = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body
@@ -25,11 +28,21 @@ const register = asyncHandler(async (req, res) => {
     user.password = hash
 
     const registeredUser = await user.save()
-    return res.status(200).json({
-      status: registeredUser ? true : false,
-      message: registeredUser
-        ? 'Register is successfully. Pleas logging in ~'
-        : 'Something went wrong'
+
+    const payload = {
+      id: registeredUser.id
+    }
+
+    const token = generateAccessToken(payload)
+
+    res.status(200).json({
+      success: true,
+      token: `Bearer ${token}`,
+      user: {
+        id: registeredUser.id,
+        username: registeredUser.username,
+        email: registeredUser.email
+      }
     })
   }
 })
@@ -45,17 +58,32 @@ const login = asyncHandler(async (req, res) => {
   if (!user) {
     return res.status(400).send({ error: 'No user found for this email' })
   }
+  const payload = {
+    id: user.id
+  }
 
   const isMatch = await bcrypt.compare(password, user.password)
-
   if (!isMatch) {
     return res.status(400).json({
       success: false,
-      error: 'Password Incorrect'
+      error: 'Invalid Credentials'
     })
   }
+  const token = generateAccessToken(payload)
+  const refreshToken = generateRefreshToken(payload)
+  res.cookie('Refresh Token', refreshToken, {
+    maxAge: 7 * 24 * 60 * 1000,
+    httpOnly: true
+  })
+
+  await User.findByIdAndUpdate(
+    user._id,
+    { refreshToken, updated: Date.now() },
+    { new: true }
+  )
   res.status(200).json({
     success: true,
+    token: `Bearer ${token}`,
     user: {
       id: user.id,
       username: user.username,
