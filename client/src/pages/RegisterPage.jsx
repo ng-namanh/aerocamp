@@ -7,6 +7,7 @@ import axios from 'axios'
 function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
   function registerUser(e) {
     e.preventDefault()
     try {
@@ -41,6 +42,25 @@ function LoginPage() {
             Start exploring camp from all <br /> over the world.
           </h1>
           <form className='mt-8' onSubmit={registerUser}>
+            <div className='flex flex-col gap-2'>
+              <label
+                id='username'
+                className='text-xl text-[#544848]'
+                htmlFor='email'
+              >
+                Email
+              </label>
+              <input
+                className='primary w-3/4 p-3 rounded-sm'
+                type='text'
+                value={email}
+                name='email'
+                id='email'
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                }}
+              />
+            </div>
             <div className='flex flex-col gap-2'>
               <label
                 id='username'
