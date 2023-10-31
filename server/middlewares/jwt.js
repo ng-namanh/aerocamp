@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
+
 const generateAccessToken = (payload) =>
   jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' })
 
@@ -8,14 +9,15 @@ const generateRefreshToken = (payload) =>
 
 const verifyAccessToken = asyncHandler(async (req, res, next) => {
   if (req?.headers?.authorization?.startsWith('Bearer')) {
-    const token = req.headers.authorization.split(' ')[1]
+    // check if header authorization's startWith include 'Bearer'?
+    const token = req.headers.authorization.split(' ')[1] // get the token part out of the authorization header string
     jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+      // verify token
       if (err)
         return res.status(401).json({
           success: false,
           message: 'Invalid access token'
         })
-      console.log(payload)
       req.user = payload
       next()
     })
