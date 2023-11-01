@@ -6,7 +6,7 @@ import { Link, Navigate } from 'react-router-dom'
 import testimonialAvatar from '../assets/testiAvatar.svg'
 import { UserContext } from '../context/UserContext'
 function LoginPage() {
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [redirect, setRedirect] = useState(false)
 
@@ -16,14 +16,15 @@ function LoginPage() {
     e.preventDefault()
     try {
       axios
-        .post('/login', {
-          username,
+        .post('/auth/login', {
+          email,
           password
         })
         .then((response) => {
           if (response.data) {
+            localStorage.setItem('token', response.data.token)
             console.log(response.data)
-            setUser(response.data)
+            setUser(response.data.user)
             setRedirect(true)
           }
         })
@@ -31,8 +32,8 @@ function LoginPage() {
       console.error(error)
       alert('login fail, please check your username or password')
     }
-    console.log(username, password)
-    setUsername('')
+    console.log(email, password)
+    setEmail('')
     setPassword('')
   }
   if (redirect) {
@@ -70,8 +71,8 @@ function LoginPage() {
                 type='text'
                 name='username'
                 id='username'
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
               />
             </div>
             <div className='flex flex-col gap-2 mt-4'>

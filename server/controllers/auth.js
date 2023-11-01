@@ -103,7 +103,7 @@ const logout = asyncHandler(async (req, res) => {
     { refreshToken: '' },
     { new: true }
   )
-  res.clearCookie('refreshtoken', {
+  res.clearCookie('refreshToken', {
     httpOnly: true,
     secure: true
   })

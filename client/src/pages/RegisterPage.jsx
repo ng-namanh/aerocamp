@@ -11,7 +11,8 @@ function LoginPage() {
   function registerUser(e) {
     e.preventDefault()
     try {
-      axios.post('/register', {
+      axios.post('/auth/register', {
+        email,
         username,
         password
       })

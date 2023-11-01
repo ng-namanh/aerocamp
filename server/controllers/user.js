@@ -7,7 +7,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     success: user ? true : false,
-    response: user ? user : 'User not found'
+    user: user ? user : 'User not found'
   })
 })
 
