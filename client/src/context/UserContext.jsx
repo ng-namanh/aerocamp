@@ -5,25 +5,25 @@ import PropTypes from 'prop-types'
 export const UserContext = createContext({})
 
 function UserContextProvider({ children }) {
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(null)
   const [isLoggedIn, SetIsLoggedIn] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    if (!user) {
+    if (token) {
       axios
         .get('/user/profile', {
           headers: {
             Authorization: token
           }
         })
-        .then((data) => {
-          console.log(data)
-          setUser(data)
+        .then((response) => {
+          console.log(response.data.user)
+          setUser(response.data.user)
           SetIsLoggedIn(true)
         })
     }
-  }, [user])
+  }, [])
 
   return (
     <UserContext.Provider value={{ user, setUser, isLoggedIn }}>

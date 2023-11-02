@@ -12,27 +12,20 @@ function LoginPage() {
 
   const { setUser } = useContext(UserContext)
 
-  function Login(e) {
+  async function Login(e) {
     e.preventDefault()
-    try {
-      axios
-        .post('/auth/login', {
-          email,
-          password
-        })
-        .then((response) => {
-          if (response.data) {
-            localStorage.setItem('token', response.data.token)
-            console.log(response.data)
-            setUser(response.data.user)
-            setRedirect(true)
-          }
-        })
-    } catch (error) {
-      console.error(error)
-      alert('login fail, please check your username or password')
+
+    const response = await axios.post('/auth/login', {
+      email,
+      password
+    })
+
+    if (response.data) {
+      localStorage.setItem('token', response.data.token)
+      console.log(response.data)
+      setUser(response.data.user)
+      setRedirect(true)
     }
-    console.log(email, password)
     setEmail('')
     setPassword('')
   }

@@ -1,27 +1,13 @@
 import logo from '../assets/logo.svg'
 import { Link, Navigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useContext } from 'react'
+import { UserContext } from '../context/UserContext'
 import axios from 'axios'
 function Header() {
-  const [user, setUser] = useState(null)
   const [redirect, setRedirect] = useState(false)
 
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      axios
-        .get('/user/profile', {
-          headers: {
-            Authorization: token
-          }
-        })
-        .then((response) => {
-          console.log(response.data.user)
-          setUser(response.data.user)
-        })
-    }
-  }, [])
-
+  const { user, isLoggedIn } = useContext(UserContext)
+  console.log(isLoggedIn)
   function Logout() {
     try {
       axios.post('/auth/logout').then((response) => {
