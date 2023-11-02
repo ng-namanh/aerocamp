@@ -8,20 +8,24 @@ function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
-  function registerUser(e) {
+  async function registerUser(e) {
     e.preventDefault()
-    try {
-      axios.post('/register', {
+
+    const response = await axios
+      .post('/auth/register', {
+        email,
         username,
         password
       })
-    } catch (error) {
-      console.error(error)
-      alert('registeration failed. Please try again later!')
+      .catch((error) => {
+        alert(error.response.data.message)
+      })
+    if (response) {
+      alert('Register sucessfully')
     }
-    console.log(username, password)
     setUsername('')
     setPassword('')
+    setEmail('')
   }
   return (
     <div className='max-w-7xl my-12 mx-auto'>

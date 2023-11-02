@@ -71,7 +71,7 @@ const login = asyncHandler(async (req, res) => {
   }
   const token = generateAccessToken(payload)
   const refreshToken = generateRefreshToken(payload)
-  res.cookie('Refresh Token', refreshToken, {
+  res.cookie('refreshToken', refreshToken, {
     maxAge: 7 * 24 * 60 * 1000,
     httpOnly: true
   })
@@ -92,7 +92,29 @@ const login = asyncHandler(async (req, res) => {
   })
 })
 
+const logout = asyncHandler(async (req, res) => {
+  /*  res.cookie('refresh token', '').json(true) */
+  const cookie = req.cookies
+  if (!cookie || !cookie.refreshToken)
+    throw new Error('No refresh token in cookie')
+  // delete refresh token in database
+  await User.findOneAndUpdate(
+    { refreshToken: cookie.refreshToken },
+    { refreshToken: '' },
+    { new: true }
+  )
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: true
+  })
+  res.json({
+    success: true,
+    message: 'Logged out'
+  })
+})
+
 module.exports = {
   register,
-  login
+  login,
+  logout
 }

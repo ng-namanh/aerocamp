@@ -1,10 +1,31 @@
 import logo from '../assets/logo.svg'
-import { Link } from 'react-router-dom'
-import { useContext } from 'react'
+import { Link, Navigate } from 'react-router-dom'
+import { useState, useContext } from 'react'
 import { UserContext } from '../context/UserContext'
+import axios from 'axios'
 function Header() {
-  const { user } = useContext(UserContext)
-  /*  console.log(user.username) */
+  const [redirect, setRedirect] = useState(false)
+
+  const { user, isLoggedIn } = useContext(UserContext)
+  console.log(isLoggedIn)
+  function Logout() {
+    try {
+      axios.post('/auth/logout').then((response) => {
+        if (response.data) {
+          console.log(response.data)
+          localStorage.removeItem('token')
+          setRedirect(true)
+        }
+      })
+    } catch (error) {
+      console.error(error)
+      alert('logout fail, please check your username or password')
+    }
+  }
+  if (redirect) {
+    return <Navigate to={'/login'} />
+  }
+
   return (
     <div className='flex justify-between'>
       <div className='flex items-center gap-6'>
@@ -25,11 +46,13 @@ function Header() {
             <p className='text-lg text-[#544848] font-semibold'>
               {user.username}
             </p>
-            <Link to='/register'>
-              <button className='primary p-3 bg-black text-white'>
-                Logout
-              </button>
-            </Link>
+
+            <button
+              className='primary p-3 bg-black text-white'
+              onClick={Logout}
+            >
+              Logout
+            </button>
           </div>
         </div>
       ) : (
