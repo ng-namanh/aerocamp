@@ -10,7 +10,7 @@ const CampgroundSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  imageUrl: {
+  image: {
     type: String
   },
   description: {
@@ -18,10 +18,13 @@ const CampgroundSchema = new mongoose.Schema({
     required: true
   },
   price: {
-    type: Number,
+    type: String,
     required: true
   },
-  submittedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  location: {
+    type: String
+  },
+  submittedBy: { type: Object, ref: 'User' },
   updated: Date,
   created: {
     type: Date,
