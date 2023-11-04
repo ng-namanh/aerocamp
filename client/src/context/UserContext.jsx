@@ -18,7 +18,6 @@ function UserContextProvider({ children }) {
           }
         })
         .then((response) => {
-          console.log(response.data.user)
           setUser(response.data.user)
           SetIsLoggedIn(true)
         })

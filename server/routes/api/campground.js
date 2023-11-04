@@ -5,12 +5,13 @@ const upload = require('../../middlewares/storage.js')
 
 router.get('/', controllers.getAllCampground)
 router.get('/:id', controllers.getCampground)
-router.post('/create', verifyAccessToken, controllers.createCampground)
+router.post('/new', verifyAccessToken, controllers.createCampground)
+router.post('/upload-by-link', verifyAccessToken, controllers.uploadImgByLink)
 router.post(
   '/img-upload',
   verifyAccessToken,
   upload.array('images', 20),
   controllers.uploadCampgroundImage
 )
-router.post('/upload-by-link', verifyAccessToken, controllers.uploadImgByLink)
+
 module.exports = router

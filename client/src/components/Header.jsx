@@ -6,13 +6,11 @@ import axios from 'axios'
 function Header() {
   const [redirect, setRedirect] = useState(false)
 
-  const { user, isLoggedIn } = useContext(UserContext)
-  console.log(isLoggedIn)
+  const { user } = useContext(UserContext)
   function Logout() {
     try {
       axios.post('/auth/logout').then((response) => {
         if (response.data) {
-          console.log(response.data)
           localStorage.removeItem('token')
           setRedirect(true)
         }

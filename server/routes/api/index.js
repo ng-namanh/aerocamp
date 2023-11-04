@@ -6,6 +6,6 @@ const campgroundRoutes = require('./campground')
 
 router.use('/auth', authRoutes)
 router.use('/user', userRoutes)
-router.use('/campground', campgroundRoutes)
+router.use('/campgrounds', campgroundRoutes)
 
 module.exports = router
