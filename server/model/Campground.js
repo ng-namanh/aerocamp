@@ -6,12 +6,8 @@ const CampgroundSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  caption: {
-    type: String,
-    required: true
-  },
-  image: {
-    type: String
+  images: {
+    type: [String]
   },
   description: {
     type: String,
@@ -24,7 +20,7 @@ const CampgroundSchema = new mongoose.Schema({
   location: {
     type: String
   },
-  submittedBy: { type: Object, ref: 'User' },
+  author: { type: Object, ref: 'User' },
   updated: Date,
   created: {
     type: Date,

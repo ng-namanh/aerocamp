@@ -7,30 +7,32 @@ const generateAccessToken = (payload) =>
 const generateRefreshToken = (payload) =>
   jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '14d' })
 
-const verifyAccessToken = asyncHandler(async (req, res, next) => {
-  if (req?.headers?.authorization?.startsWith('Bearer')) {
-    // check if header authorization's startWith include 'Bearer'?
-    const token = req.headers.authorization.split(' ')[1] // get the token part out of the authorization header string
-    jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-      // verify token
-      if (err)
-        return res.status(401).json({
-          success: false,
-          message: 'Invalid access token'
-        })
-      req.user = payload
-      next()
-    })
-  } else {
-    return res.status(401).json({
-      success: false,
-      message: 'Required authentication!'
-    })
-  }
+const authentication = asyncHandler(async (req, res, next) => {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if (token == null) return res.sendStatus(401)
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(401)
+    req.user = user
+    next()
+  })
 })
+
+/* const authentication = (req, res, next) => {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if (token == null) return res.sendStatus(401)
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403)
+    req.user = user
+    next()
+  })
+} */
 
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
-  verifyAccessToken
+  authentication
 }
