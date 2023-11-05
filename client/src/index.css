@@ -13,7 +13,7 @@ input[type='password'].primary {
   @apply outline-0 border border-black;
 }
 textarea {
-  height: 140px;
+  @apply outline-0 border border-black resize-none;
 }
 button {
   @apply bg-white border border-black;

@@ -14,7 +14,7 @@ const getCampground = asyncHandler(async (req, res) => {
 })
 
 const createCampground = asyncHandler(async (req, res) => {
-  const { name, caption, images, description, price, location } = req.body
+  const { name, images, description, price, location } = req.body
 
   const { id } = req.user
   const user = await User.findById(id)
@@ -23,9 +23,8 @@ const createCampground = asyncHandler(async (req, res) => {
     username: user.username
   }
   const campground = await Campground.create({
-    submittedBy: userInfo,
+    author: userInfo,
     name,
-    caption,
     campgroundImages: images,
     description,
     price,

@@ -1,15 +1,15 @@
 const router = require('express').Router()
 const controllers = require('../../controllers/campground.js')
-const { verifyAccessToken } = require('../../middlewares/jwt')
+const { authentication } = require('../../middlewares/jwt')
 const upload = require('../../middlewares/storage.js')
 
 router.get('/', controllers.getAllCampground)
 router.get('/:id', controllers.getCampground)
-router.post('/new', verifyAccessToken, controllers.createCampground)
-router.post('/upload-by-link', verifyAccessToken, controllers.uploadImgByLink)
+router.post('/new', authentication, controllers.createCampground)
+router.post('/upload-by-link', authentication, controllers.uploadImgByLink)
 router.post(
   '/img-upload',
-  verifyAccessToken,
+  authentication,
   upload.array('images', 20),
   controllers.uploadCampgroundImage
 )
