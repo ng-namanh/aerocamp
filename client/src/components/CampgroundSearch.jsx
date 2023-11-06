@@ -24,7 +24,7 @@ function CampgroundSearch() {
           </button>
         </div>
         <Link
-          to='/home'
+          to='/new-campground'
           className='text-base underline text-[#544848] font-semibold'
         >
           Add your own campground
