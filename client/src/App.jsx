@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import axios from 'axios'
 import NewCampgroundPage from './pages/NewCampgroundPage'
+import CampgroundPage from './pages/CampgroundPage'
 axios.defaults.baseURL = 'http://localhost:5000/api'
 axios.defaults.withCredentials = true
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path='/' element={<Layout />}>
           <Route path='/home' element={<HomePage />} />
           <Route path='/new-campground' element={<NewCampgroundPage />} />
+          <Route path='/campground/:id' element={<CampgroundPage />} />
         </Route>
       </Routes>
     </UserContextProvider>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 function NewCampgroundPage() {
   const [name, setName] = useState('')
+  const [location, setLocation] = useState('')
   const [image, setImage] = useState('')
   const [price, setPrice] = useState('')
   const [description, setDescription] = useState('')
@@ -13,6 +14,7 @@ function NewCampgroundPage() {
       '/campgrounds/new',
       {
         name,
+        location,
         image,
         price,
         description
@@ -49,6 +51,23 @@ function NewCampgroundPage() {
                 id='campgroundName'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className='flex flex-col gap-2 w-full mt-4'>
+              <label
+                id='campgroundName'
+                className='text-xl  text-[#544848]'
+                htmlFor='campgroundName'
+              >
+                Location
+              </label>
+              <input
+                className='primary p-3 rounded-sm'
+                type='text'
+                name='campgroundName'
+                id='campgroundName'
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
               />
             </div>
             <div className='flex flex-col gap-2 mt-4 w-full'>
