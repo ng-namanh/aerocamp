@@ -2,6 +2,7 @@
 import campgroundImg from '../assets/campgroundDetailImg.png'
 
 function CampgroundDetail({ campground }) {
+  console.log(campground)
   return (
     <div className=' border-1 border border-black px-8 py-6 '>
       <div className='flex flex-col gap-4'>
@@ -26,7 +27,7 @@ function CampgroundDetail({ campground }) {
             <p className='text-lg'>
               Submitted by
               <span className='font-bold ml-1'>
-                {/* {campground.author.username} */}
+                {campground.author.username}
               </span>
             </p>
           </div>

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import mapImg from '../assets/map.png'
 import CampgroundDetail from '../components/CampgroundDetail'
-import CampgroundReview from '../components/CampgroundReview'
+import CampgroundReviewList from '../components/CampgroundReview'
 
 function CampgroundPage() {
   const { id } = useParams()
@@ -16,7 +16,7 @@ function CampgroundPage() {
       setCampground(response.data)
     })
   }, [id])
-  console.log(campground)
+
   return (
     <div className='mt-16 flex justify-between '>
       <div>
@@ -24,7 +24,7 @@ function CampgroundPage() {
       </div>
       <div className='flex flex-col gap-2 w-3/5'>
         {campground && <CampgroundDetail campground={campground} />}
-        <CampgroundReview />
+        <CampgroundReviewList />
       </div>
     </div>
   )

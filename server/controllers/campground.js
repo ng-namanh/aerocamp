@@ -1,5 +1,6 @@
 const Campground = require('../model/Campground.js')
 const User = require('../model/User.js')
+const Review = require('../model/Review.js')
 const asyncHandler = require('express-async-handler')
 const imageDownloader = require('image-downloader')
 const path = require('path')
@@ -57,10 +58,46 @@ const uploadImgByLink = asyncHandler(async (req, res) => {
   res.json(newName)
 })
 
+const addReview = asyncHandler(async (req, res) => {
+  const { content } = req.body
+  const { id } = req.user
+  const { id: campgroundId } = req.params
+  const user = await User.findById(id)
+  const userInfo = {
+    id: user.id,
+    username: user.username
+  }
+  const campground = await Campground.findById(campgroundId)
+  const campgroundInfo = {
+    id: campground.id,
+    name: campground.name
+  }
+  const newReview = await Review.create({
+    author: userInfo,
+    campground: campgroundInfo,
+    content
+  })
+  await Campground.findOneAndUpdate(
+    {
+      _id: { $eq: campgroundId }
+    },
+    {
+      $addToSet: {
+        reviews: newReview._id
+      }
+    }
+  )
+  res.status(200).json({
+    message: 'Review added successfully',
+    data: newReview
+  })
+})
+
 module.exports = {
   createCampground,
   uploadCampgroundImage,
   getAllCampground,
   getCampground,
-  uploadImgByLink
+  uploadImgByLink,
+  addReview
 }
