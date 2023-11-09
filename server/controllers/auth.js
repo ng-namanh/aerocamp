@@ -93,7 +93,6 @@ const login = asyncHandler(async (req, res) => {
 })
 
 const logout = asyncHandler(async (req, res) => {
-  /*  res.cookie('refresh token', '').json(true) */
   const cookie = req.cookies
   if (!cookie || !cookie.refreshToken)
     throw new Error('No refresh token in cookie')

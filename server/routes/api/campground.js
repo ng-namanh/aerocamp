@@ -13,5 +13,6 @@ router.post(
   upload.array('images', 20),
   controllers.uploadCampgroundImage
 )
+router.post('/:id/review', authentication, controllers.addReview)
 
 module.exports = router

@@ -9,11 +9,9 @@ function Header() {
   const { user } = useContext(UserContext)
   function Logout() {
     try {
-      axios.post('/auth/logout').then((response) => {
-        if (response.data) {
-          localStorage.removeItem('token')
-          setRedirect(true)
-        }
+      axios.post('/auth/logout').then(() => {
+        localStorage.removeItem('token')
+        setRedirect(true)
       })
     } catch (error) {
       console.error(error)

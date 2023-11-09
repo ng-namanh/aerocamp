@@ -1,6 +1,9 @@
 import commentIcon from '../assets/comment.svg'
+import { Link, useParams } from 'react-router-dom'
 
-function CampgroundReview() {
+function CampgroundReviewList() {
+  const { id } = useParams()
+
   const reviewData = [
     {
       id: 1,
@@ -39,14 +42,16 @@ function CampgroundReview() {
         </div>
       ))}
       <div className='my-6'>
-        <button className='primary p-3 bg-black text-white flex gap-3 text-lg'>
-          <span>
-            <img src={commentIcon} alt='' />
-          </span>
-          Leave a Review
-        </button>
+        <Link to={'/campground/' + id + '/post-review/'}>
+          <button className='primary p-3 bg-black text-white flex gap-3 text-lg'>
+            <span>
+              <img src={commentIcon} alt='' />
+            </span>
+            Leave a Review
+          </button>
+        </Link>
       </div>
     </div>
   )
 }
-export default CampgroundReview
+export default CampgroundReviewList
