@@ -11,7 +11,13 @@ const getAllCampground = asyncHandler(async (req, res) => {
 
 const getCampground = asyncHandler(async (req, res) => {
   const { id } = req.params
-  res.json(await Campground.findById(id))
+  const campground = await Campground.findById(id)
+  const reviews = await Review.find({ campground: id }).sort({ createdAt: -1 })
+  campground.reviews = reviews
+  res.json({
+    succes: true,
+    campground
+  })
 })
 
 const createCampground = asyncHandler(async (req, res) => {
@@ -67,14 +73,9 @@ const addReview = asyncHandler(async (req, res) => {
     id: user.id,
     username: user.username
   }
-  const campground = await Campground.findById(campgroundId)
-  const campgroundInfo = {
-    id: campground.id,
-    name: campground.name
-  }
   const newReview = await Review.create({
     author: userInfo,
-    campground: campgroundInfo,
+    campground: campgroundId,
     content
   })
   await Campground.findOneAndUpdate(

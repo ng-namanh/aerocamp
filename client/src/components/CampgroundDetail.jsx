@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import campgroundImg from '../assets/campgroundDetailImg.png'
-
+import PropTypes from 'prop-types'
 function CampgroundDetail({ campground }) {
-  console.log(campground)
   return (
     <div className=' border-1 border border-black px-8 py-6 '>
       <div className='flex flex-col gap-4'>
@@ -35,5 +34,8 @@ function CampgroundDetail({ campground }) {
       </div>
     </div>
   )
+}
+CampgroundDetail.propTypes = {
+  campground: PropTypes.object.isRequired
 }
 export default CampgroundDetail
