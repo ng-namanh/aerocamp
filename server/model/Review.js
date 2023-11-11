@@ -10,7 +10,7 @@ const ReviewSchema = new mongoose.Schema(
       type: String
     },
     campground: {
-      type: Object,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Campground'
     }
   },

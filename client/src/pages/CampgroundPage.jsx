@@ -8,12 +8,14 @@ import CampgroundReviewList from '../components/CampgroundReview'
 function CampgroundPage() {
   const { id } = useParams()
   const [campground, setCampground] = useState(null)
+  const [reviews, setReviews] = useState([])
   useEffect(() => {
     if (!id) {
       return
     }
     axios.get(`/campgrounds/${id}`).then((response) => {
-      setCampground(response.data)
+      setCampground(response.data.campground)
+      setReviews(response.data.campground.reviews)
     })
   }, [id])
 
@@ -24,7 +26,7 @@ function CampgroundPage() {
       </div>
       <div className='flex flex-col gap-2 w-3/5'>
         {campground && <CampgroundDetail campground={campground} />}
-        <CampgroundReviewList />
+        <CampgroundReviewList reviews={reviews} />
       </div>
     </div>
   )
