@@ -32,7 +32,7 @@ const createCampground = asyncHandler(async (req, res) => {
   const campground = await Campground.create({
     author: userInfo,
     name,
-    campgroundImages: images,
+    images,
     description,
     price,
     location

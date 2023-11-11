@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-import campgroundImg from '../assets/campgroundDetailImg.png'
 import PropTypes from 'prop-types'
 function CampgroundDetail({ campground }) {
   return (
@@ -7,7 +5,7 @@ function CampgroundDetail({ campground }) {
       <div className='flex flex-col gap-4'>
         <div>
           <img
-            src={campgroundImg}
+            src={'http://localhost:5000/uploads/' + campground.images[0]}
             alt=''
             className=' object-cover flex-grow h-full w-full'
           />

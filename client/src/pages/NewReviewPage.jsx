@@ -1,24 +1,34 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-
+import { Navigate } from 'react-router-dom'
 function ReviewPage() {
   const [reviewContent, setReviewContent] = useState('')
+  const [redirect, setRedirect] = useState(false)
   const { id: campgroundId } = useParams()
 
   const token = localStorage.getItem('token')
   async function postReview(e) {
     e.preventDefault()
-    await axios.post(
-      `/campgrounds/${campgroundId}/review`,
-      { content: reviewContent },
-      {
-        headers: {
-          Authorization: token
+    await axios
+      .post(
+        `/campgrounds/${campgroundId}/review`,
+        { content: reviewContent },
+        {
+          headers: {
+            Authorization: token
+          }
         }
-      }
-    )
+      )
+      .then((response) => {
+        if (response) {
+          setRedirect(true)
+        }
+      })
     setReviewContent('')
+  }
+  if (redirect) {
+    return <Navigate to={'/campground/' + campgroundId} />
   }
 
   return (

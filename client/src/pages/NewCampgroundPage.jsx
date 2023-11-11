@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import axios from 'axios'
+import ImagesUploader from '../components/ImagesUploader'
 function NewCampgroundPage() {
   const [name, setName] = useState('')
   const [location, setLocation] = useState('')
-  const [image, setImage] = useState('')
+  const [addedImages, setAddedImages] = useState([])
   const [price, setPrice] = useState('')
   const [description, setDescription] = useState('')
-
   const token = localStorage.getItem('token')
   const newCampground = async (e) => {
     e.preventDefault()
@@ -15,7 +15,7 @@ function NewCampgroundPage() {
       {
         name,
         location,
-        image,
+        images: addedImages,
         price,
         description
       },
@@ -25,6 +25,11 @@ function NewCampgroundPage() {
         }
       }
     )
+    setName('')
+    setLocation('')
+    setAddedImages([])
+    setPrice('')
+    setDescription('')
   }
 
   return (
@@ -70,23 +75,10 @@ function NewCampgroundPage() {
                 onChange={(e) => setLocation(e.target.value)}
               />
             </div>
-            <div className='flex flex-col gap-2 mt-4 w-full'>
-              <label
-                id='image'
-                className='text-xl text-[#544848]'
-                htmlFor='image'
-              >
-                Image
-              </label>
-              <input
-                className='primary p-3 rounded-sm'
-                type='text'
-                name='image'
-                id='image'
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              />
-            </div>
+            <ImagesUploader
+              addedImages={addedImages}
+              onChange={setAddedImages}
+            />
             <div className='flex flex-col gap-2 mt-4 w-full'>
               <label
                 id='price'
