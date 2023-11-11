@@ -18,6 +18,7 @@ function ReviewPage() {
         }
       }
     )
+    setReviewContent('')
   }
 
   return (
