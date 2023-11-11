@@ -1,4 +1,3 @@
-import campgroundImage from '../assets/campground1.png'
 import arrow from '../assets/arrow.svg'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -10,7 +9,7 @@ function CampgroundGallery() {
       setCampgrounds(data)
     })
   }, [])
-
+  console.log(campgrounds)
   return (
     <div className='flex flex-col items-center'>
       <div className='grid grid-cols-4 gap-4 mt-16'>
@@ -18,7 +17,7 @@ function CampgroundGallery() {
           <Link key={index} to={'/campground/' + item._id}>
             <div className=' p-2'>
               <img
-                src={campgroundImage}
+                src={'http://localhost:5000/uploads/' + item.images[0]}
                 alt=''
                 className=' w-72 h-64 object-cover rounded-xl bg-transparent'
               />

@@ -8,7 +8,7 @@ router.get('/:id', controllers.getCampground)
 router.post('/new', authentication, controllers.createCampground)
 router.post('/upload-by-link', authentication, controllers.uploadImgByLink)
 router.post(
-  '/img-upload',
+  '/upload',
   authentication,
   upload.array('images', 20),
   controllers.uploadCampgroundImage
