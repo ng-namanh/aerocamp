@@ -5,6 +5,7 @@ import back from '../assets/back.svg'
 import { UserContext } from '../context/UserContext'
 function NewCampgroundPage() {
   const { user } = useContext(UserContext)
+  console.log(user)
   const [name, setName] = useState('')
   const [location, setLocation] = useState('')
   const [addedImages, setAddedImages] = useState([])
@@ -39,7 +40,7 @@ function NewCampgroundPage() {
     <div className='max-w-7xl mt-28 mx-auto'>
       <div className='flex mt-26 px-12 justify-center items-center'>
         <div className='border border-1 border-black w-2/3 h-[60vh] rounded-3xl bg-black'>
-          <form className='h-full'>
+          <form className='h-full' onSubmit={newCampground}>
             <div className='h-[10%] border-b border-white flex items-center p-4'>
               <div className='flex justify-between w-full'>
                 <button className='bg-black ' type='button'>
@@ -58,7 +59,7 @@ function NewCampgroundPage() {
             </div>
             <div className='h-[90%] rounded-b-3xl'>
               <div className='flex flex-row h-full'>
-                <div className=' flex-[1.5]'>
+                <div className='flex items-center justify-center flex-[1.5]'>
                   <ImagesUploader
                     addedImages={addedImages}
                     onChange={setAddedImages}
@@ -67,10 +68,12 @@ function NewCampgroundPage() {
                 <div className='flex-1 p-4 h-full border-l border-white'>
                   <div className='h-3/5'>
                     <p className='text-lg text-white font-semibold'>
-                      {user.username}
+                      {user ? user.username : 'Loading...'}
                     </p>
                     <textarea
                       type='text'
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
                       placeholder='Write a description'
                       className='bg-black text-white border-none  outline-none p-0 mt-2'
                     />
@@ -80,6 +83,8 @@ function NewCampgroundPage() {
                       <p className='text-white'>Add location</p>
                       <input
                         type='text'
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
                         className='bg-black text-white border-none  outline-none'
                       />
                     </label>
@@ -87,6 +92,8 @@ function NewCampgroundPage() {
                       <p className='text-white'>Name:</p>
                       <input
                         type='text'
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         className='bg-black text-white border-none  outline-none'
                       />
                     </label>
@@ -94,6 +101,8 @@ function NewCampgroundPage() {
                       <p className='text-white'>Price:</p>
                       <input
                         type='text'
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
                         className='bg-black text-white border-none  outline-none'
                       />
                     </label>
