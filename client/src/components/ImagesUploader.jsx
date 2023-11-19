@@ -1,25 +1,9 @@
-// import { useState } from 'react'
 import axios from 'axios'
 import PropTypes from 'prop-types'
 import imageSvg from '../assets/image.svg'
-import { useState } from 'react'
-import { FaChevronCircleLeft, FaChevronCircleRight } from 'react-icons/fa'
-import { MdDelete } from 'react-icons/md'
+import Slider from './common/slider'
 
-export default function ImagesUploader({ addedImages, onChange }) {
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  const prevSlide = () => {
-    const isFirstSlide = currentIndex === 0
-    const newIndex = isFirstSlide ? addedImages.length - 1 : currentIndex - 1
-    setCurrentIndex(newIndex)
-  }
-  const nextSlide = () => {
-    const isLastSlide = currentIndex === addedImages.length - 1
-    const newIndex = isLastSlide ? 0 : currentIndex + 1
-    setCurrentIndex(newIndex)
-  }
-
+export default function ImagesUploader({ addedImages, setAddedImages }) {
   const token = localStorage.getItem('token')
 
   function uploadPhoto(event) {
@@ -37,14 +21,10 @@ export default function ImagesUploader({ addedImages, onChange }) {
       })
       .then((response) => {
         const { data: filenames } = response
-        onChange((prev) => {
+        setAddedImages((prev) => {
           return [...prev, ...filenames]
         })
       })
-  }
-  function removePhoto(event, filename) {
-    event.preventDefault()
-    onChange([...addedImages.filter((photo) => photo !== filename)])
   }
 
   function UploadImage() {
@@ -67,43 +47,8 @@ export default function ImagesUploader({ addedImages, onChange }) {
     <>
       <div className='flex items-center justify-center w-full h-full'>
         {addedImages.length > 0 ? (
-          <div
-            style={{
-              backgroundImage: `url(http://localhost:5000/uploads/${addedImages[currentIndex]})`
-            }}
-            className='rounded-bl-3xl w-full h-full object-cover bg-cover bg-center relative group'
-          >
-            <div className='cursor-pointer absolute bottom-1 right-1 text-white bg-black rounded-xl p-2'>
-              <MdDelete
-                onClick={(event) => {
-                  removePhoto(event, addedImages[currentIndex])
-                }}
-              />
-            </div>
-            {addedImages.length > 1 && (
-              <>
-                <div
-                  onClick={prevSlide}
-                  className='flex justify-center items-center'
-                >
-                  <FaChevronCircleLeft
-                    size={30}
-                    onClick={prevSlide}
-                    className='hidden group-hover:block absolute top-1/2 -translate-x-0 -translate-y-1/2 left-5 text-2xl rounded-full bg-black text-white cursor-pointer'
-                  />
-                </div>
-                <div
-                  onClick={nextSlide}
-                  className='flex justify-center items-center'
-                >
-                  <FaChevronCircleRight
-                    size={30}
-                    onClick={nextSlide}
-                    className='hidden group-hover:block absolute top-1/2 -translate-x-0 -translate-y-1/2 right-5 text-2xl rounded-full bg-black text-white cursor-pointer'
-                  />
-                </div>
-              </>
-            )}
+          <div className='rounded-bl-3xl w-full h-full'>
+            <Slider addedImages={addedImages} />
           </div>
         ) : (
           <UploadImage />
@@ -114,5 +59,5 @@ export default function ImagesUploader({ addedImages, onChange }) {
 }
 ImagesUploader.propTypes = {
   addedImages: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired
+  setAddedImages: PropTypes.func
 }

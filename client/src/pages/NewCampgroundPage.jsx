@@ -39,7 +39,7 @@ function NewCampgroundPage() {
   return (
     <div className='max-w-7xl mt-28 mx-auto'>
       <div className='flex mt-26 px-12 justify-center items-center'>
-        <div className='border border-1 border-black w-2/3 h-[60vh] rounded-3xl bg-black'>
+        <div className='border border-1 border-black w-2/3 h-[60vh] rounded-md bg-black'>
           <form className='h-full' onSubmit={newCampground}>
             <div className='h-[10%] border-b border-white flex items-center p-4'>
               <div className='flex justify-between w-full'>
@@ -62,7 +62,7 @@ function NewCampgroundPage() {
                 <div className='flex items-center justify-center flex-[1.5]'>
                   <ImagesUploader
                     addedImages={addedImages}
-                    onChange={setAddedImages}
+                    setAddedImages={setAddedImages}
                   />
                 </div>
                 <div className='flex-1 p-4 h-full border-l border-white'>

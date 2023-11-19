@@ -1,15 +1,19 @@
 import PropTypes from 'prop-types'
+import Slider from './common/slider'
 function CampgroundDetail({ campground }) {
   return (
     <div className=' border-1 border border-black px-8 py-6 '>
       <div className='flex flex-col gap-4'>
-        <div>
+        <div className='object-cover flex-grow h-[400px] w-full'>
+          <Slider addedImages={campground.images} />
+        </div>
+        {/* <div>
           <img
             src={'http://localhost:5000/uploads/' + campground.images[0]}
             alt=''
             className=' object-cover flex-grow h-full w-full'
           />
-        </div>
+        </div> */}
 
         <div>
           <div>
