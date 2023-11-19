@@ -5,7 +5,7 @@ import back from '../assets/back.svg'
 import { UserContext } from '../context/UserContext'
 function NewCampgroundPage() {
   const { user } = useContext(UserContext)
-  console.log(user)
+
   const [name, setName] = useState('')
   const [location, setLocation] = useState('')
   const [addedImages, setAddedImages] = useState([])
@@ -112,92 +112,6 @@ function NewCampgroundPage() {
             </div>
           </form>
         </div>
-        {/* <div className='w-1/2'>
-          <h1 className='font-bold text-3xl text-center'>Add new campground</h1>
-
-          <form
-            className='mt-8 flex justify-center flex-col items-center'
-            onSubmit={newCampground}
-          >
-            <div className='flex flex-col gap-2 w-full'>
-              <label
-                id='campgroundName'
-                className='text-xl  text-[#544848]'
-                htmlFor='campgroundName'
-              >
-                Campground Name
-              </label>
-              <input
-                className='primary p-3 rounded-sm'
-                type='text'
-                name='campgroundName'
-                id='campgroundName'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className='flex flex-col gap-2 w-full mt-4'>
-              <label
-                id='campgroundName'
-                className='text-xl  text-[#544848]'
-                htmlFor='campgroundName'
-              >
-                Location
-              </label>
-              <input
-                className='primary p-3 rounded-sm'
-                type='text'
-                name='campgroundName'
-                id='campgroundName'
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
-            </div>
-            <ImagesUploader
-              addedImages={addedImages}
-              onChange={setAddedImages}
-            />
-            <div className='flex flex-col gap-2 mt-4 w-full'>
-              <label
-                id='price'
-                className='text-xl text-[#544848]'
-                htmlFor='price'
-              >
-                Price
-              </label>
-              <input
-                className='primary p-3 rounded-sm'
-                type='text'
-                name='price'
-                id='price'
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
-            <div className='flex flex-col gap-2 mt-4 w-full'>
-              <label
-                id='descrition'
-                className='text-xl text-[#544848]'
-                htmlFor='descrition'
-              >
-                Description
-              </label>
-              <textarea
-                name='description'
-                id=''
-                cols='30'
-                rows='10'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              ></textarea>
-            </div>
-            <div className='w-full'>
-              <button className='primary p-3 bg-black text-white mt-8 w-full '>
-                Add campground
-              </button>
-            </div>
-          </form>
-        </div> */}
       </div>
     </div>
   )
