@@ -2,6 +2,7 @@ import arrow from '../assets/arrow.svg'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+
 function CampgroundGallery() {
   const [campgrounds, setCampgrounds] = useState([])
   useEffect(() => {

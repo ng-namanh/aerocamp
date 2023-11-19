@@ -1,9 +1,9 @@
-// import { useState } from 'react'
 import axios from 'axios'
 import PropTypes from 'prop-types'
 import imageSvg from '../assets/image.svg'
+import Slider from './common/slider'
 
-export default function ImagesUploader({ addedImages, onChange }) {
+export default function ImagesUploader({ addedImages, setAddedImages }) {
   const token = localStorage.getItem('token')
 
   function uploadPhoto(event) {
@@ -15,22 +15,18 @@ export default function ImagesUploader({ addedImages, onChange }) {
     axios
       .post('/campgrounds/upload', data, {
         headers: {
-          'Content-type': 'muiltipart/form-data',
+          'Content-type': 'multipart/form-data',
           Authorization: token
         }
       })
       .then((response) => {
         const { data: filenames } = response
-        console.log(data)
-        onChange((prev) => {
+        setAddedImages((prev) => {
           return [...prev, ...filenames]
         })
       })
   }
-  function removePhoto(event, filename) {
-    event.preventDefault()
-    onChange([...addedImages.filter((photo) => photo !== filename)])
-  }
+
   function UploadImage() {
     return (
       <div className='flex flex-col gap-4'>
@@ -51,26 +47,9 @@ export default function ImagesUploader({ addedImages, onChange }) {
     <>
       <div className='flex items-center justify-center w-full h-full'>
         {addedImages.length > 0 ? (
-          addedImages.map((link) => (
-            <div
-              key={link}
-              className='rounded-b-2xl w-full h-full object-cover relative'
-            >
-              <img
-                className='rounded-bl-3xl w-full h-full object-cover '
-                src={'http://localhost:5000/uploads/' + link}
-                alt=''
-              />
-              <button
-                onClick={(event) => {
-                  removePhoto(event, link)
-                }}
-                className='cursor-pointer absolute bottom-1 right-1 text-white bg-black bg-opacity-50 rounded-2xl py-2 px-3'
-              >
-                delete
-              </button>
-            </div>
-          ))
+          <div className='rounded-bl-3xl w-full h-full'>
+            <Slider addedImages={addedImages} />
+          </div>
         ) : (
           <UploadImage />
         )}
@@ -80,5 +59,5 @@ export default function ImagesUploader({ addedImages, onChange }) {
 }
 ImagesUploader.propTypes = {
   addedImages: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired
+  setAddedImages: PropTypes.func
 }
