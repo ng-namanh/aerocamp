@@ -27,13 +27,6 @@ function Slider({ addedImages }) {
       }}
       className=' w-full h-full object-cover bg-cover bg-center relative group'
     >
-      {/* <div className='cursor-pointer absolute bottom-1 right-1 text-white bg-black rounded-xl p-2'>
-        <MdDelete
-          onClick={(event) => {
-            removePhoto(event, addedImages[currentIndex])
-          }}
-        />
-      </div> */}
       {addedImages.length > 1 && (
         <>
           <div onClick={prevSlide} className='flex justify-center items-center'>

@@ -44,6 +44,24 @@ const createCampground = asyncHandler(async (req, res) => {
   })
 })
 
+const deleteCampground = asyncHandler(async (req, res) => {
+  const { id } = req.params
+  const { id: userId } = req.user
+  const campground = await Campground.findById(id)
+  if (!campground) {
+    return res.status(404).json({
+      message:
+        'Camground not found. This campground may have been deleted already!'
+    })
+  }
+  if (userId === campground.author.id) {
+    await Campground.deleteOne({ _id: id })
+    res.status(200).json({
+      message: 'Campground deleted successfully'
+    })
+  }
+})
+
 const uploadCampgroundImage = asyncHandler(async (req, res) => {
   const uploadedFiles = []
   req.files.forEach((file) => {
@@ -100,5 +118,6 @@ module.exports = {
   getAllCampground,
   getCampground,
   uploadImgByLink,
-  addReview
+  addReview,
+  deleteCampground
 }
