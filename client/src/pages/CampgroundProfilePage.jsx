@@ -4,10 +4,13 @@ import { UserContext } from '../context/UserContext'
 import { useContext } from 'react'
 import { MoreHorizontal } from 'lucide-react'
 import Modal from '../components/common/modal'
+import { Navigate } from 'react-router-dom'
 function CampgroundProfilePage() {
   const { user } = useContext(UserContext)
+
   const [userCampgrounds, setUserCampground] = useState([])
   const [isOpen, setIsOpen] = useState(false)
+  const [redirect, setRedirect] = useState(false)
   //   const [loading, setLoading] = useState(true)
   useEffect(() => {
     axios.get('/campgrounds').then(({ data }) => {
@@ -19,8 +22,7 @@ function CampgroundProfilePage() {
       //   setLoading(false)
     })
   }, [user])
-
-  console.log(userCampgrounds)
+  // console.log(userCampgrounds)
 
   const deleteCampground = (campgroundId) => {
     axios
@@ -35,7 +37,12 @@ function CampgroundProfilePage() {
         )
         setUserCampground(updatedCampgrounds)
         setIsOpen(false)
+        setRedirect(true)
       })
+  }
+
+  if (redirect) {
+    return <Navigate to='/new-campground' />
   }
 
   return (
@@ -66,7 +73,7 @@ function CampgroundProfilePage() {
                       </h3>
                     </div>
                     <h4 className='text-[#544848] text-ellipsis overflow-hidden break-words whitespace-nowrap'>
-                      {userCampground.location}
+                      {userCampground.location}, , {userCampground._id}
                     </h4>
                   </div>
                 </div>
@@ -75,18 +82,21 @@ function CampgroundProfilePage() {
                     size={30}
                     type='button'
                     style={{ transition: 'all .15s ease' }}
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => {
+                      setIsOpen(userCampground._id)
+                    }}
                   />
                 </div>
               </div>
-              {isOpen && (
-                <Modal
-                  onChange={setIsOpen}
-                  deleteCampground={() => {
-                    deleteCampground(userCampground._id)
-                  }}
-                />
-              )}
+              <div className='w-[70vw] mt-28 mx-auto'>
+                {isOpen && (
+                  <Modal
+                    onChange={() => setIsOpen(false)}
+                    campgroundId={isOpen}
+                    deleteCampground={deleteCampground}
+                  />
+                )}
+              </div>
             </div>
           ))}
       </div>

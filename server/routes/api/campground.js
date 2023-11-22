@@ -17,5 +17,5 @@ router.post(
 router.post('/:id/review', authentication, controllers.addReview)
 
 router.delete('/:id', authentication, controllers.deleteCampground)
-
+router.put('/:id', authentication, controllers.updateCampground)
 module.exports = router
