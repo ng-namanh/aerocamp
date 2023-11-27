@@ -2,6 +2,7 @@ import ImagesUploader from '../ImagesUploader'
 import back from '../../assets/back.svg'
 import PropTypes from 'prop-types'
 function CampgroundForm({
+  cancelOpenForm,
   user,
   submitEvent,
   title,
@@ -22,7 +23,7 @@ function CampgroundForm({
         <form className='h-full' onSubmit={submitEvent}>
           <div className='h-[10%] border-b border-white flex items-center p-4'>
             <div className='flex justify-between w-full'>
-              <button className='bg-black ' type='button'>
+              <button className='bg-black' onClick={cancelOpenForm}>
                 <img src={back} alt='' />
               </button>
               <p className='text-white font-bold text-xl'>{title}</p>
@@ -108,6 +109,7 @@ CampgroundForm.propTypes = {
   price: PropTypes.string.isRequired,
   setPrice: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  setName: PropTypes.func.isRequired
+  setName: PropTypes.func.isRequired,
+  cancelOpenForm: PropTypes.func
 }
 export default CampgroundForm

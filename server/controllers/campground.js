@@ -81,7 +81,9 @@ const updateCampground = asyncHandler(async (req, res) => {
     })
     await campground.save()
     res.status(200).json({
-      message: 'Campground succesfully eddited!'
+      success: true,
+      message: 'Campground succesfully eddited!',
+      updatedCampground: campground
     })
   } else {
     res.status(404).json({

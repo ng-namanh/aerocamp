@@ -4,7 +4,7 @@ import { UserContext } from '../context/UserContext'
 import { useContext } from 'react'
 import { MoreHorizontal } from 'lucide-react'
 import Modal from '../components/common/modal'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Link } from 'react-router-dom'
 function CampgroundProfilePage() {
   const { user } = useContext(UserContext)
 
@@ -41,6 +41,13 @@ function CampgroundProfilePage() {
       })
   }
 
+  const updateCampground = (updatedCampground) => {
+    const updatedCampgrounds = userCampgrounds.map((campground) =>
+      campground._id === updatedCampground._id ? updatedCampground : campground
+    )
+
+    setUserCampground(updatedCampgrounds)
+  }
   if (redirect) {
     return <Navigate to='/new-campground' />
   }
@@ -52,13 +59,16 @@ function CampgroundProfilePage() {
           userCampgrounds.map((userCampground) => (
             <div key={userCampground._id} className=''>
               <div className='group p-2 relative '>
-                <img
-                  src={
-                    'http://localhost:5000/uploads/' + userCampground.images[0]
-                  }
-                  alt=''
-                  className=' w-72 h-64 object-cover rounded-xl bg-transparent'
-                />
+                <Link to={'/campground/' + userCampground._id}>
+                  <img
+                    src={
+                      'http://localhost:5000/uploads/' +
+                      userCampground.images[0]
+                    }
+                    alt=''
+                    className=' w-72 h-64 object-cover rounded-xl bg-transparent'
+                  />
+                </Link>
                 <div className='my-4'>
                   <div>
                     <div className='flex justify-between '>
@@ -73,7 +83,7 @@ function CampgroundProfilePage() {
                       </h3>
                     </div>
                     <h4 className='text-[#544848] text-ellipsis overflow-hidden break-words whitespace-nowrap'>
-                      {userCampground.location}, , {userCampground._id}
+                      {userCampground.location}
                     </h4>
                   </div>
                 </div>
@@ -88,12 +98,13 @@ function CampgroundProfilePage() {
                   />
                 </div>
               </div>
-              <div className='w-[70vw] mt-28 mx-auto'>
+              <div className=''>
                 {isOpen && (
                   <Modal
                     onChange={() => setIsOpen(false)}
                     campgroundId={isOpen}
                     deleteCampground={deleteCampground}
+                    updateCampground={updateCampground}
                   />
                 )}
               </div>
