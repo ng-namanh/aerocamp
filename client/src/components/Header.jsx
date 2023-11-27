@@ -35,6 +35,14 @@ function Header() {
         >
           New Campground
         </Link>
+        {user && (
+          <Link
+            to='/my-campground'
+            className='text-lg text-[#544848] font-semibold'
+          >
+            My Campground
+          </Link>
+        )}
       </div>
       {user ? (
         <div>

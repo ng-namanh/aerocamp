@@ -4,10 +4,13 @@ import { UserContext } from '../context/UserContext'
 import { useContext } from 'react'
 import { MoreHorizontal } from 'lucide-react'
 import Modal from '../components/common/modal'
+import { Navigate, Link } from 'react-router-dom'
 function CampgroundProfilePage() {
   const { user } = useContext(UserContext)
+
   const [userCampgrounds, setUserCampground] = useState([])
   const [isOpen, setIsOpen] = useState(false)
+  const [redirect, setRedirect] = useState(false)
   //   const [loading, setLoading] = useState(true)
   useEffect(() => {
     axios.get('/campgrounds').then(({ data }) => {
@@ -19,8 +22,7 @@ function CampgroundProfilePage() {
       //   setLoading(false)
     })
   }, [user])
-
-  console.log(userCampgrounds)
+  // console.log(userCampgrounds)
 
   const deleteCampground = (campgroundId) => {
     axios
@@ -35,7 +37,19 @@ function CampgroundProfilePage() {
         )
         setUserCampground(updatedCampgrounds)
         setIsOpen(false)
+        setRedirect(true)
       })
+  }
+
+  const updateCampground = (updatedCampground) => {
+    const updatedCampgrounds = userCampgrounds.map((campground) =>
+      campground._id === updatedCampground._id ? updatedCampground : campground
+    )
+
+    setUserCampground(updatedCampgrounds)
+  }
+  if (redirect) {
+    return <Navigate to='/new-campground' />
   }
 
   return (
@@ -45,13 +59,16 @@ function CampgroundProfilePage() {
           userCampgrounds.map((userCampground) => (
             <div key={userCampground._id} className=''>
               <div className='group p-2 relative '>
-                <img
-                  src={
-                    'http://localhost:5000/uploads/' + userCampground.images[0]
-                  }
-                  alt=''
-                  className=' w-72 h-64 object-cover rounded-xl bg-transparent'
-                />
+                <Link to={'/campground/' + userCampground._id}>
+                  <img
+                    src={
+                      'http://localhost:5000/uploads/' +
+                      userCampground.images[0]
+                    }
+                    alt=''
+                    className=' w-72 h-64 object-cover rounded-xl bg-transparent'
+                  />
+                </Link>
                 <div className='my-4'>
                   <div>
                     <div className='flex justify-between '>
@@ -75,18 +92,22 @@ function CampgroundProfilePage() {
                     size={30}
                     type='button'
                     style={{ transition: 'all .15s ease' }}
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => {
+                      setIsOpen(userCampground._id)
+                    }}
                   />
                 </div>
               </div>
-              {isOpen && (
-                <Modal
-                  onChange={setIsOpen}
-                  deleteCampground={() => {
-                    deleteCampground(userCampground._id)
-                  }}
-                />
-              )}
+              <div className=''>
+                {isOpen && (
+                  <Modal
+                    onChange={() => setIsOpen(false)}
+                    campgroundId={isOpen}
+                    deleteCampground={deleteCampground}
+                    updateCampground={updateCampground}
+                  />
+                )}
+              </div>
             </div>
           ))}
       </div>

@@ -62,6 +62,36 @@ const deleteCampground = asyncHandler(async (req, res) => {
   }
 })
 
+const updateCampground = asyncHandler(async (req, res) => {
+  const { id: campgroundId } = req.params
+  const { id: userId } = req.user
+  const { name, description, price, location } = req.body
+  const campground = await Campground.findById(campgroundId)
+  if (!campground) {
+    return res.status(404).json({
+      message: 'Cannot found any campground to update'
+    })
+  }
+  if (userId === campground.author.id) {
+    campground.set({
+      name,
+      description,
+      price,
+      location
+    })
+    await campground.save()
+    res.status(200).json({
+      success: true,
+      message: 'Campground succesfully eddited!',
+      updatedCampground: campground
+    })
+  } else {
+    res.status(404).json({
+      message: 'Wrong credential!'
+    })
+  }
+})
+
 const uploadCampgroundImage = asyncHandler(async (req, res) => {
   const uploadedFiles = []
   req.files.forEach((file) => {
@@ -119,5 +149,6 @@ module.exports = {
   getCampground,
   uploadImgByLink,
   addReview,
-  deleteCampground
+  deleteCampground,
+  updateCampground
 }
