@@ -1,9 +1,22 @@
+require('dotenv').config()
 const Campground = require('../model/Campground.js')
 const User = require('../model/User.js')
 const Review = require('../model/Review.js')
 const asyncHandler = require('express-async-handler')
 const imageDownloader = require('image-downloader')
 const path = require('path')
+const mbxClient = require('@mapbox/mapbox-sdk')
+const mbxGeocoder = require('@mapbox/mapbox-sdk/services/geocoding.js')
+
+// Mapbox Access Token
+const mapboxToken = process.env.MAPBOX_TOKEN
+
+// Define Mapbox Geocoding Service
+const geocodingService = mbxGeocoder(
+  mbxClient({
+    accessToken: mapboxToken
+  })
+)
 
 const getAllCampground = asyncHandler(async (req, res) => {
   res.json(await Campground.find())
@@ -23,6 +36,14 @@ const getCampground = asyncHandler(async (req, res) => {
 const createCampground = asyncHandler(async (req, res) => {
   const { name, images, description, price, location } = req.body
 
+  // define geoData to extract geometry coordinates
+  const geoData = await geocodingService
+    .forwardGeocode({
+      query: location,
+      limit: 1
+    })
+    .send()
+
   const { id } = req.user
   const user = await User.findById(id)
   const userInfo = {
@@ -35,7 +56,8 @@ const createCampground = asyncHandler(async (req, res) => {
     images,
     description,
     price,
-    location
+    location,
+    geometry: geoData.body.features[0].geometry
   })
 
   res.status(200).json({
