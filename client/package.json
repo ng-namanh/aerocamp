@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/mapbox-gl": "^2.7.19",
     "axios": "^1.6.0",
     "lucide": "^0.292.0",
     "lucide-react": "^0.292.0",
+    "mapbox-gl": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
+    "react-map-gl": "^7.1.6",
     "react-router-dom": "^6.17.0"
   },
   "devDependencies": {

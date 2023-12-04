@@ -5,7 +5,7 @@ const notFound = (req, res, next) => {
 }
 
 const errorHanler = (error, req, res, next) => {
-  const statusCode = res.statusCode === 200 ? 500 : response.statusCode
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode
   return res.status(statusCode).json({
     success: false,
     message: error?.message

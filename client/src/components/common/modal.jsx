@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import CampgroundForm from './campgroundForm'
 import axios from 'axios'
 import { UserContext } from '../../context/UserContext'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useCallback } from 'react'
 function Modal({ onChange, deleteCampground, campgroundId, updateCampground }) {
   const { user } = useContext(UserContext)
   const [name, setName] = useState('')
@@ -13,17 +13,19 @@ function Modal({ onChange, deleteCampground, campgroundId, updateCampground }) {
   const [description, setDescription] = useState('')
   const [isEditing, setIsEditing] = useState(false)
 
-  const getCampgroundById = async (campgroundId) => {
-    // Use the campgroundId parameter in your function
-    await axios.get(`/campgrounds/${campgroundId}`).then(({ data }) => {
-      // console.log(data.campground)
-      setName(data.campground.name)
-      setLocation(data.campground.location)
-      setPrice(data.campground.price)
-      setDescription(data.campground.description)
-      setAddedImages(data.campground.images)
-    })
-  }
+  const getCampgroundById = useCallback(
+    async (campgroundId) => {
+      // Use the campgroundId parameter in your function
+      await axios.get(`/campgrounds/${campgroundId}`).then(({ data }) => {
+        setName(data.campground.name)
+        setLocation(data.campground.location)
+        setPrice(data.campground.price)
+        setDescription(data.campground.description)
+        setAddedImages(data.campground.images)
+      })
+    },
+    [setName, setLocation, setPrice, setDescription, setAddedImages]
+  )
 
   const handleEditClick = (campgroundId) => {
     setIsEditing(true)
@@ -99,9 +101,6 @@ function Modal({ onChange, deleteCampground, campgroundId, updateCampground }) {
                 price={price}
                 setPrice={setPrice}
               />
-              <div>
-                <button onClick={handleCancelClick}>Cancel</button>
-              </div>
             </div>
           ) : (
             <div className='flex flex-col w-full'>

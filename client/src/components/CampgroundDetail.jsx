@@ -7,14 +7,6 @@ function CampgroundDetail({ campground }) {
         <div className='object-cover flex-grow h-[400px] w-full'>
           <Slider addedImages={campground.images} />
         </div>
-        {/* <div>
-          <img
-            src={'http://localhost:5000/uploads/' + campground.images[0]}
-            alt=''
-            className=' object-cover flex-grow h-full w-full'
-          />
-        </div> */}
-
         <div>
           <div>
             <div className='flex justify-between'>

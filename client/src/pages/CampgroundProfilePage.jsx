@@ -5,6 +5,7 @@ import { useContext } from 'react'
 import { MoreHorizontal } from 'lucide-react'
 import Modal from '../components/common/modal'
 import { Navigate, Link } from 'react-router-dom'
+
 function CampgroundProfilePage() {
   const { user } = useContext(UserContext)
 
@@ -12,6 +13,7 @@ function CampgroundProfilePage() {
   const [isOpen, setIsOpen] = useState(false)
   const [redirect, setRedirect] = useState(false)
   //   const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     axios.get('/campgrounds').then(({ data }) => {
       setUserCampground(
@@ -21,7 +23,7 @@ function CampgroundProfilePage() {
       )
       //   setLoading(false)
     })
-  }, [user])
+  }, [user, userCampgrounds])
   // console.log(userCampgrounds)
 
   const deleteCampground = (campgroundId) => {
