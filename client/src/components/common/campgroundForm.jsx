@@ -44,7 +44,7 @@ function CampgroundForm({
                 />
               </div>
               <div className='flex-1 p-4 h-full border-l border-white'>
-                <div className='h-3/5'>
+                <div className='h-3/5 text-ellipsis overflow-clip break-words mb-4'>
                   <p className='text-lg text-white font-semibold'>
                     {user ? user.username : 'Loading...'}
                   </p>
@@ -53,7 +53,7 @@ function CampgroundForm({
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder='Write a description'
-                    className='bg-black text-white border-none  outline-none p-0 mt-2'
+                    className='bg-black text-white border-none outline-none p-0 mt-2 w-full h-full mb-4 '
                   />
                 </div>
                 <div className='h-2/5 flex flex-col gap-4'>

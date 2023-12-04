@@ -5,6 +5,7 @@ const Review = require('../model/Review.js')
 const asyncHandler = require('express-async-handler')
 const imageDownloader = require('image-downloader')
 const path = require('path')
+// const geocodingService = require('../services/gecoding.js')
 const mbxClient = require('@mapbox/mapbox-sdk')
 const mbxGeocoder = require('@mapbox/mapbox-sdk/services/geocoding.js')
 
@@ -88,6 +89,12 @@ const updateCampground = asyncHandler(async (req, res) => {
   const { id: campgroundId } = req.params
   const { id: userId } = req.user
   const { name, description, price, location } = req.body
+  const geoData = await geocodingService
+    .forwardGeocode({
+      query: location,
+      limit: 1
+    })
+    .send()
   const campground = await Campground.findById(campgroundId)
   if (!campground) {
     return res.status(404).json({
@@ -99,7 +106,8 @@ const updateCampground = asyncHandler(async (req, res) => {
       name,
       description,
       price,
-      location
+      location,
+      geometry: geoData.body.features[0].geometry
     })
     await campground.save()
     res.status(200).json({
