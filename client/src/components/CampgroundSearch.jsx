@@ -1,7 +1,14 @@
 import magnify from '../assets/magnify.svg'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import searchBanner from '../assets/search_banner.svg'
-function CampgroundSearch() {
+import PropTypes from 'prop-types'
+import { useEffect } from 'react'
+function CampgroundSearch({ onSearch }) {
+  const [searchQuery, setSearchQuery] = useState('')
+  useEffect(() => {
+    console.log(searchQuery)
+  }, [searchQuery])
   return (
     <div className='flex items-center justify-center border-2 border-black box-shadow py-8'>
       <div className='w-1/2'>
@@ -17,9 +24,17 @@ function CampgroundSearch() {
               type='text'
               placeholder='Search for camps'
               className='w-full secondary placeholder-black outline-0'
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value)
+                onSearch(searchQuery)
+              }}
             />
           </div>
-          <button className='primary px-14 h-14 bg-black text-white'>
+          <button
+            className='primary px-14 h-14 bg-black text-white'
+            onClick={() => onSearch(searchQuery)}
+          >
             Search
           </button>
         </div>
@@ -35,5 +50,8 @@ function CampgroundSearch() {
       </div>
     </div>
   )
+}
+CampgroundSearch.propTypes = {
+  onSearch: PropTypes.func.isRequired
 }
 export default CampgroundSearch
