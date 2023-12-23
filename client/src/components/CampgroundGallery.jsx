@@ -1,15 +1,8 @@
 import arrow from '../assets/arrow.svg'
-import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
-function CampgroundGallery() {
-  const [campgrounds, setCampgrounds] = useState(null)
-  useEffect(() => {
-    axios.get('/campgrounds').then(({ data }) => {
-      setCampgrounds(data)
-    })
-  }, [])
 
+function CampgroundGallery({ campgrounds }) {
   return (
     <div className='flex flex-col items-center'>
       <div className='grid grid-cols-4 gap-4 mt-16'>
@@ -52,5 +45,8 @@ function CampgroundGallery() {
       </div>
     </div>
   )
+}
+CampgroundGallery.propTypes = {
+  campgrounds: PropTypes.array.isRequired
 }
 export default CampgroundGallery
