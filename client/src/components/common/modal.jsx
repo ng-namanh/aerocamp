@@ -66,7 +66,7 @@ function Modal({ onChange, deleteCampground, campgroundId, updateCampground }) {
       // Only fetch data if editing
       getCampgroundById(campgroundId)
     }
-  }, [isEditing, campgroundId])
+  }, [isEditing, campgroundId, getCampgroundById])
   return (
     <div className='fixed inset-0 overflow-y-auto'>
       <div className='flex z-50 items-center justify-center absolute inset-0 min-h-screen pt-4 px-4 pb-20 text-center sm:p-0'>

@@ -5,7 +5,6 @@ const Review = require('../model/Review.js')
 const asyncHandler = require('express-async-handler')
 const imageDownloader = require('image-downloader')
 const path = require('path')
-// const geocodingService = require('../services/gecoding.js')
 const mbxClient = require('@mapbox/mapbox-sdk')
 const mbxGeocoder = require('@mapbox/mapbox-sdk/services/geocoding.js')
 

@@ -13,13 +13,6 @@ function CampgroundPage() {
   const [reviews, setReviews] = useState([])
   const [error, setError] = useState(null)
   const [showCampgroundInfo, setShowCampgroundInfo] = useState(false)
-  // const [viewport, setViewport] = useState({
-  //   latitude: 45.4211,
-  //   longtitude: -75.6903,
-  //   width: '200px',
-  //   height: '200px',
-  //   zoom: 10
-  // })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +28,7 @@ function CampgroundPage() {
     if (id) {
       fetchData()
     }
-  }, [id])
+  }, [id, reviews])
 
   if (error) {
     return <div>Error: {error}</div>
